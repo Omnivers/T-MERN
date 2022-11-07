@@ -1,6 +1,7 @@
 const router=require("express").Router();
 const User=require('../models/User');
 const CryptoJs=require('crypto-js');
+const JWT=require("jsonwebtoken");
 
 
 router.post('/register',async (req,res)=>{
@@ -32,8 +33,18 @@ router.post("/login", async(req,res)=>{
             res.status(401).json("Wrong Password");
             return;
         }
+        // JWT part
+        const accessToken= JWT.sign(
+            {
+                id:user.id,
+                isAdmin:user.isAdmin
+            },
+            process.env.PASSJWT,{expiresIn:"1d"}
+        );
+        // 
+
         const {password,...others}=user._doc; // to prevent showing the password in our res.json down below
-        res.status(200).json(others);
+        res.status(200).json({...others,accessToken});
     }catch(e){
         res.status(500).json(e);
     }
