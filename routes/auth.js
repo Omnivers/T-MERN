@@ -1,7 +1,7 @@
 const router=require("express").Router();
 const User=require('../models/User');
 
-router.post('/',async (req,res)=>{
+router.post('/register',async (req,res)=>{
     const newUser= new User({
         username:req.body.username,
         email:req.body.email,
@@ -13,8 +13,6 @@ router.post('/',async (req,res)=>{
     }catch(e){
         res.status(500).json(e); //On peut mieux definir l'erreur par exemple username required ou autre
     }
-    
-
 });
 
 module.exports = router;
