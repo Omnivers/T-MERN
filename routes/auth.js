@@ -27,12 +27,13 @@ router.post("/login", async(req,res)=>{
             return;
         }
         const hashedPassword=CryptoJs.AES.decrypt(user.password, process.env.PASSCRYPT);
-        const password=hashedPassword.toString(CryptoJs.enc.Utf8);
-        if(password !== req.body.password){
+        const originalPassword=hashedPassword.toString(CryptoJs.enc.Utf8);
+        if(originalPassword !== req.body.password){
             res.status(401).json("Wrong Password");
             return;
         }
-        res.status(200).json(user);
+        const {password,...others}=user._doc; // to prevent showing the password in our res.json down below
+        res.status(200).json(others);
     }catch(e){
         res.status(500).json(e);
     }
