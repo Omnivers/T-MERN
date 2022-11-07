@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const dotenv=require('dotenv');
 const userRoute=require('./routes/user');
 const authRoute=require('./routes/auth');
+const prodRoute=require('./routes/product');
 
 // Config
 dotenv.config();
@@ -17,3 +18,4 @@ app.listen(process.env.PORT,()=>{
 })
 app.use("/API/auth", authRoute);
 app.use("/API/user", userRoute);
+app.use("/API/products",prodRoute);
