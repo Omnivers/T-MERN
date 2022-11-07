@@ -14,3 +14,4 @@ app.listen(process.env.PORT,()=>{
 })
 
 app.use("/API/auth", authRoute);
+app.use("/API/user", userRoute);
