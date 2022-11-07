@@ -17,4 +17,27 @@ router.post('/register',async (req,res)=>{
     }
 });
 
+//LOGIN
+
+router.post("/login", async(req,res)=>{
+    try{
+        const user = await User.findOne({username:req.body.username});
+        if(!user){
+            res.status(401).json("Wrong Username")
+            return;
+        }
+        const hashedPassword=CryptoJs.AES.decrypt(user.password, process.env.PASSCRYPT);
+        const password=hashedPassword.toString(CryptoJs.enc.Utf8);
+        if(password !== req.body.password){
+            res.status(401).json("Wrong Password");
+            return;
+        }
+        res.status(200).json(user);
+    }catch(e){
+        res.status(500).json(e);
+    }
+})
+
+
+
 module.exports = router;
